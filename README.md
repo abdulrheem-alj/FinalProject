@@ -8,10 +8,16 @@ Smart Tourist Guide is an AI-powered assistant designed to help tourists identif
  
 ---
 
-## Demo 
+## 👨‍💻 Demo 
 [Final_Project_SDA_2025 Demo Link](https://drive.google.com/drive/folders/16fYRv0umD3qJ9ya_1KpYnOPPTQs99NpJ?usp=sharing)
 
-## 🚀 Features
+
+## 🚀 Flask Web Live
+[Flask Web App Link](https://finalprojectsda.onrender.com)
+
+---
+
+## 🧠 Features
 
 - 🖼️ Landmark recognition from images using CLIP
 - 🗣️ Voice input support using speech-to-text and text-to-speech
@@ -57,9 +63,7 @@ Smart Tourist Guide is an AI-powered assistant designed to help tourists identif
    - Google Search (if no results)
 
 ---
-
-
----
+ 
 
 ## 📊 Future Enhancements
 
