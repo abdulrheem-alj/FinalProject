@@ -4,7 +4,7 @@
 Smart Tourist Guide is an AI-powered assistant designed to help tourists identify and learn about landmarks using multimodal input: text, image, or voice. The system leverages modern LLM techniques, RAG (Retrieval-Augmented Generation), and image/audio processing to deliver informative and natural responses in English and Arabic.
 
 
-![screenshot](Output/output_1.png)
+![screenshot](Output/output_2.png)
 
 
 ---
