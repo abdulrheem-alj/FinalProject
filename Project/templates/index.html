@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>المرشد السياحي الذكي</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --blue-light: #caf0f8;
+      --blue-mid: #90e0ef;
+      --blue-accent: #00b4d8;
+      --blue-dark: #0077b6;
+      --blue-deep: #b8e8ff;
+      --bot-bg: #e3f2fd;
+      --user-bg: #d1e7dd;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0b2c4d;
+
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--blue-light), var(--blue-mid), var(--blue-accent));
+      background-size: 400% 400%;
+      animation: gradientFlow 12s ease infinite;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+ 
+ 
+    @keyframes gradientFlow {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .main-wrapper {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      width: 95%;
+      max-width: 1200px;
+      height: 90vh;
+      position: relative;
+    }
+
+    .language-selector {
+      position: absolute;
+      top: 20px;
+      right: -160px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .language-selector button {
+      padding: 8px 12px;
+      font-size: 14px;
+      border: none;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .chat-container {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 16px;
+      background: var(--blue-dark);
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: var(--blue-deep);
+    }
+
+    .message {
+      margin-bottom: 16px;
+      padding: 10px 16px;
+      border-radius: 20px;
+      max-width: 80%;
+      font-size: 15px;
+      line-height: 1.5;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+
+    .message.user {
+      margin-left: auto;
+      background: var(--user-bg);
+      color: #0f5132;
+      text-align: left;
+      border-bottom-right-radius: 0;
+    }
+
+    .message.bot {
+      margin-right: auto;
+      background: var(--bot-bg);
+      color: #0d47a1;
+      text-align: right;
+      border-bottom-left-radius: 0;
+    }
+
+    .message.sourse {
+      margin-right: auto;
+      background: #00c3ff9d;
+       color: #0d47a1;
+      text-align: right;
+      border-bottom-left-radius: 0;
+    }
+
+
+    .input-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px;
+      background: #f1f1f1;
+      border-top: 1px solid #ccc;
+    }
+
+    .input-area input[type="text"] {
+      flex: 2;
+      padding: 12px 16px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 25px;
+    }
+
+    .icon-button,
+    .send-btn,
+    .reset-btn {
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .icon-button {
+      background: #e7f1f7;
+      font-size: 18px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .icon-button input {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      top: 0;
+      left: 0;
+      cursor: pointer;
+    }
+
+    .send-btn {
+      background: var(--blue-accent);
+      color: white;
+      padding: 10px 18px;
+      font-size: 16px;
+      border-radius: 25px;
+    }
+
+    .reset-btn {
+      background: #4fbfd5;
+      color: white;
+      padding: 8px 14px;
+      font-size: 14px;
+      border-radius: 20px;
+    }
+
+    .help-box {
+
+      flex: 1;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      font-size: 14px;
+      color: #1e3d59;
+      overflow-y: auto;
+    }
+
+    .help-box h3 {
+      margin-top: 0;
+      color: #0077b6;
+      font-size: 18px;
+    }
+
+    .preview-container {
+      display: none;
+      visibility: hidden;
+
+      width: 80px;
+      height: 80px;
+      padding: 10px;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .preview-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+
+    .audio-preview {
+      display: none;
+      visibility: hidden;
+
+      width: 100%;
+      margin-top: 4px;
+    }
+
+
+  </style>
+</head>
+
+<body>
+  <div class="main-wrapper">
+ 
+    <!-- ✅ واجهة الشات -->
+    <div class="chat-container">
+      <div class="chat-header">💬 المرشد السياحي الذكي</div>
+      <div class="messages" id="messages">
+        <div class="message bot">👋 مرحباً بك! اسأل عن أي معلم سياحي أو ارفع صورة أو صوت.</div>
+      </div>
+
+      <div class="preview-container" id="preview"></div>
+
+      <div class="audio-preview" id="audio-preview"></div>
+
+      <div class="input-area">
+        <input type="text" id="text-input" placeholder="اكتب سؤالك هنا..." />
+        <button class="reset-btn" id="reset-btn">إعادة</button>
+
+        <button class="icon-button"><i class="fas fa-image"></i><input type="file" id="image-upload"
+            accept="image/*"></button>
+
+        <button class="icon-button"><i class="fas fa-microphone"></i><input type="file" id="audio-upload"
+            accept="audio/*"></button>
+        <button class="send-btn" id="send-btn">إرسال</button>
+      </div>
+    </div>
+
+    <!-- ✅ تعليمات الاستخدام بلغات منفصلة -->
+    <div class="help-box">
+      <h3 dir="rtl">📘 كيفية الاستخدام</h3>
+      <ul dir="rtl">
+        <li>📝 اسأل عن معلم سياحي</li>
+        <li>📷 ارفع صورة للتعرف</li>
+        <li>🎤 أرسل صوت</li>
+        <li>📚 نستخدم ذكاء اصطناعي + ويكيبيديا</li>
+      </ul>
+      <hr />
+      <h3 dir="ltr">📘 How to Use</h3>
+      <ul dir="ltr">
+        <li>📝 Ask about a tourist landmark</li>
+        <li>📷 Upload a photo</li>
+        <li>🎤 Upload voice</li>
+        <li>📚 We use AI + Wikipedia</li>
+      </ul>
+      <hr />
+      <h3 dir="ltr">📘 Cómo usar</h3>
+      <ul dir="ltr">
+        <li>📝 Pregunta por un lugar turístico</li>
+        <li>📷 Sube una foto</li>
+        <li>🎤 Sube audio</li>
+        <li>📚 Usamos IA + Wikipedia</li>
+      </ul>
+    </div>
+
+
+  </div>
+
+  <script>
+    const messagesEl = document.getElementById('messages');
+    const textInput = document.getElementById('text-input');
+    const sendBtn = document.getElementById('send-btn');
+    const imageUpload = document.getElementById('image-upload');
+    const audioUpload = document.getElementById('audio-upload');
+    const resetBtn = document.getElementById('reset-btn');
+    const preview = document.getElementById('preview');
+    const audioPrev = document.getElementById('audio-preview');
+ 
+    const lang = "en";
+    // عرض المعاينة فور اختيار الصورة
+    imageUpload.addEventListener('change', () => {
+      preview.innerHTML = '';
+      preview.style = "display: block; visibility: visible;"
+      const file = imageUpload.files[0];
+      if (!file) return;
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      preview.appendChild(img);
+    });
+  // معاينة الصوت
+  audioUpload.addEventListener('change', () => {
+    audioPrev.innerHTML = '';
+    audioPrev.style = "display: block; visibility: visible;"
+    const file = audioUpload.files[0];
+    if (!file) return;
+    const audio = document.createElement('audio');
+    audio.controls = true;
+    audio.src = URL.createObjectURL(file);
+    audioPrev.appendChild(audio);
+  });
+
+  function appendSourse(text, sender = 'sourse'  ) {
+      const msg = document.createElement('div');
+      msg.classList.add('message', sender);
+      // msg.textContent = text;
+      msg.style= "direction:ltr; text-align: left; ";
+ 
+      msg.innerHTML = text + "<br/>" + "✅ The response was generated by AI !";
+      messagesEl.appendChild(msg);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+  
+    function appendMessage(text, sender = 'user' , type) {
+      const msg = document.createElement('div');
+      msg.classList.add('message', sender);
+      // msg.textContent = text;
+
+      if(type == 1){
+        msg.style= "direction:rtl; text-align: right;";
+      }
+      else{
+        msg.style= "direction:ltr; text-align: left; ";
+      }
+     
+
+      msg.innerHTML = text;
+      messagesEl.appendChild(msg);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function appendImage(file, sender = 'user') {
+      const url = URL.createObjectURL(file);
+      const msg = document.createElement('div');
+      msg.classList.add('message', sender);
+      msg.style = " width: 400px; height: 400px;";
+      const img = document.createElement('img');
+      img.src = url;
+      img.style = " width: 350px; height: 350px;";
+      msg.appendChild(img);
+      messagesEl.appendChild(msg);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      preview.style = "display: none; visibility: hidden;"
+    }
+
+    function appendAudio(file, sender='user') {
+      audioPrev.style = "display: none; visibility: hidden;"
+      audioPrev.innerHTML = '';
+      
+    const url = URL.createObjectURL(file);
+    const msg = document.createElement('div');
+    msg.classList.add('message', sender);
+    msg.style= "direction:rtl; text-align: right;";
+
+    const audio = document.createElement('audio');
+    audio.controls = true;
+    audio.src = url;
+    msg.appendChild(audio);
+    messagesEl.appendChild(msg);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+ 
+ 
+  }
+
+
+
+    sendBtn.addEventListener('click', () => {
+      const text = textInput.value.trim();
+      const imgFile = imageUpload.files[0];
+      const audioFile = audioUpload.files[0];
+
+       if (text) {
+        appendMessage(text, 'user', 2);
+        appendMessage("... جاري المعالجة", 'bot' ,1);
+
+        setTimeout(() => { 
+
+          // const apiUrl = 'https://finalprojectsda-1.onrender.com/SmartAgent/' + text;
+          const apiUrl = '/SmartAgent/' + text;
+
+          // Make a GET request
+          fetch(apiUrl)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
+            .then(data => {
+
+              result = data.result;
+              
+             
+
+              appendMessage(data.result, 'bot' , data.lang);
+              // appendMessage("✅ تم توليد الرد من الذكاء الاصطناعي!", 'bot',1);
+              appendSourse(data.sourse, 'sourse' );
+
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+
+
+
+        }, 1000);
+        textInput.value = '';
+      }
+
+      // ---------------------------------------------------------
+
+      if (imgFile) {
+        appendImage(imgFile, 'user' , 2);
+        appendMessage("... جاري المعالجة", 'bot' ,  1);
+
+
+        imageUpload.value = ''; 
+        const formData = new FormData();
+        formData.append('image', imgFile);
+
+        // أرسل الطلب إلى نقطة النهاية /upload
+        fetch('/upload', {
+          method: 'POST',
+          body: formData
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+
+              result = data.result;
+ 
+              appendMessage(data.result, 'bot', data.lang);
+              appendSourse(data.sourse, 'sourse' );
+              // appendMessage(, 'bot',1);
+
+            } else {
+              console.error('خطأ:', data.error);
+            }
+          })
+          .catch(err => console.error(err));
+
+
+      }
+
+
+      // ---------------------------------------------------------
+      if (audioFile) {
+        appendMessage(`🎤 ملف صوتي: ${audioFile.name}`, 'user' , 2);
+        audioUpload.value = '';
+        appendMessage("... جاري المعالجة", 'bot' ,1);
+
+        const formData = new FormData();
+        formData.append('audio', audioFile);
+
+        fetch('/upload', {
+          method: 'POST',
+          body: formData
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) { 
+           
+              result = data.result;
+           
+         
+
+              appendMessage(data.result, 'bot', data.lang);
+              // appendMessage("✅ تم توليد الرد من الذكاء الاصطناعي!", 'bot', 1);
+              appendSourse(data.sourse, 'sourse' );
+
+            } else {
+              console.error('خطأ:', data.error);
+            }
+          })
+          .catch(err => console.error(err));
+
+
+
+      }
+
+    });
+
+    resetBtn.addEventListener('click', () => {
+      messagesEl.innerHTML = '';
+      preview.style = "display: none; visibility: hidden;"
+      audioPrev.style =  "display: none; visibility: hidden;"
+      appendMessage("👋 مرحباً بك! اسأل عن أي معلم سياحي أو ارفع صورة أو صوت.", 'bot');
+    });
+
+    textInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendBtn.click();
+    });
+
+    
+  </script>
+</body>
+
+</html>
